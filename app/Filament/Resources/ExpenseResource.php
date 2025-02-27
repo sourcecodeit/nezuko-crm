@@ -23,7 +23,29 @@ class ExpenseResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('recurring')
+                    ->live()
+                    ->required(),
+                Forms\Components\TextInput::make('amount')
+                    ->required()
+                    ->numeric()
+                    ->prefix('€'),
+                Forms\Components\DatePicker::make('date')
+                    ->required(fn(Forms\Get $get) => !$get('recurring'))
+                    ->visible(fn(Forms\Get $get) => !$get('recurring')),
+                Forms\Components\Select::make('customer_id')
+                    ->relationship('customer', 'name')
+                    ->searchable()
+                    ->preload(),
+                Forms\Components\DatePicker::make('start_date')
+                    ->visible(fn(Forms\Get $get) => $get('recurring'))
+                    ->required(fn(Forms\Get $get) => $get('recurring')),
+                Forms\Components\DatePicker::make('end_date')
+                    ->visible(fn(Forms\Get $get) => $get('recurring'))
+                    ->afterOrEqual('start_date'),
             ]);
     }
 
@@ -31,18 +53,26 @@ class ExpenseResource extends Resource
     {
         return $table
             ->columns([
-                //
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount')
+                    ->money('USD')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('recurring')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date()
+                    ->sortable(),
             ]);
     }
 
