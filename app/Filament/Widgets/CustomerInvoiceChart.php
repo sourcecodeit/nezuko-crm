@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerInvoiceChart extends ChartWidget
 {
-    protected static ?string $heading = 'Customer Invoice Totals (Current Year)';
-
+    public function getHeading(): string 
+    {
+        $year = session('selected_year', Carbon::now()->year);
+        return "Customer Invoice Totals ($year)";
+    }
     protected static string $color = 'primary';
-
+    
     protected function getType(): string
     {
         return 'bar';
@@ -20,7 +23,7 @@ class CustomerInvoiceChart extends ChartWidget
 
     protected function getData(): array
     {
-        $year = Carbon::now()->year;
+        $year = session('selected_year', Carbon::now()->year);
 
         $customerTotals = Invoice::select(
             'customers.name',

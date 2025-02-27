@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class MonthlyInvoiceChart extends ChartWidget
 {
-    protected static ?string $heading = 'Monthly Invoice Amounts';
-
+    public function getHeading(): string 
+    {
+        $year = session('selected_year', Carbon::now()->year);
+        return "Monthly Invoice Amounts ($year)";
+    }
     protected static string $color = 'success';
-
-
+    
     protected function getType(): string
     {
         return 'bar';
@@ -21,7 +23,7 @@ class MonthlyInvoiceChart extends ChartWidget
 
     protected function getData(): array
     {
-        $year = Carbon::now()->year;
+        $year = session('selected_year', Carbon::now()->year);
 
         $monthlyTotals = Invoice::select(
             DB::raw('MONTH(date) as month'),

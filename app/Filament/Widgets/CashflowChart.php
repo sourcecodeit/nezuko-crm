@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class CashflowChart extends ChartWidget
 {
-    protected static ?string $heading = 'Monthly Cashflow';
+    public function getHeading(): string
+    {
+        $year = session('selected_year', Carbon::now()->year);
+        return "Monthly Cashflow ($year)";
+    }
     protected static string $color = 'primary';
     protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = 1;
     protected static ?string $maxHeight = '300px';
-
-
-
+    
     protected function getType(): string
     {
         return 'bar';
@@ -25,7 +27,7 @@ class CashflowChart extends ChartWidget
 
     protected function getData(): array
     {
-        $year = Carbon::now()->year;
+        $year = session('selected_year', Carbon::now()->year);
 
         // Get monthly invoice amounts
         $monthlyInvoices = Invoice::select(
@@ -87,8 +89,9 @@ class CashflowChart extends ChartWidget
 
         for ($month = 1; $month <= 12; $month++) {
             // Set the value to 0 for current month and future months
-            if ($month >= $currentMonth) {
-                $cashflow = 0;
+            if ($month >= $currentMonth && false) {
+                // bugged, it must consider the year as well
+                //$cashflow = 0;
             } else {
                 $income = $monthlyInvoices[$month] ?? 0;
                 $expenses = $monthlyExpenses[$month] ?? 0;
