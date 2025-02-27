@@ -10,6 +10,11 @@ use Illuminate\Contracts\View\View;
 class Dashboard extends BaseDashboard
 {
     public ?int $selectedYear = null;
+    public static ?string $title = "";
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-panels::pages/dashboard.title');
+    }
     
     protected static string $view = 'filament.pages.dashboard';
     
