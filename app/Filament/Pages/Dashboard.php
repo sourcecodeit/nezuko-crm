@@ -38,7 +38,7 @@ class Dashboard extends BaseDashboard
     public function getBodyWidgets(): array
     {
         return [
-            \App\Filament\Widgets\CashflowChart::class,
+            \App\Filament\Widgets\BalanceChart::class,
             \App\Filament\Widgets\MonthlyInvoiceChart::class,
             \App\Filament\Widgets\CustomerInvoiceChart::class,
         ];

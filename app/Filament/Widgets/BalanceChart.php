@@ -8,18 +8,18 @@ use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 
-class CashflowChart extends ChartWidget
+class BalanceChart extends ChartWidget
 {
     public function getHeading(): string
     {
         $year = session('selected_year', Carbon::now()->year);
-        return "Monthly Cashflow ($year)";
+        return "Monthly Balance ($year)";
     }
     protected static string $color = 'primary';
     protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = 1;
     protected static ?string $maxHeight = '300px';
-    
+
     protected function getType(): string
     {
         return 'bar';
@@ -82,37 +82,44 @@ class CashflowChart extends ChartWidget
             $monthlyExpenses[$month] = $oneTimeAmount + $recurringAmount;
         }
 
-        // Calculate cashflow (income - expenses)
-        $monthlyCashflow = [];
+        // Calculate balance (income - expenses)
+        $monthlyBalance = [];
         $labels = [];
         $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
 
         for ($month = 1; $month <= 12; $month++) {
-            // Set the value to 0 for current month and future months
-            if ($month >= $currentMonth && false) {
-                // bugged, it must consider the year as well
-                //$cashflow = 0;
-            } else {
-                $income = $monthlyInvoices[$month] ?? 0;
-                $expenses = $monthlyExpenses[$month] ?? 0;
-                $cashflow = $income - $expenses;
+            // Check if we should show actual data or zero
+            $shouldShowActualData = true;
+
+            // Only for the current year, set future months to zero
+            if ($year == $currentYear && $month >= $currentMonth) {
+                $shouldShowActualData = false;
             }
 
-            $monthlyCashflow[] = $cashflow;
+            if ($shouldShowActualData) {
+                $income = $monthlyInvoices[$month] ?? 0;
+                $expenses = $monthlyExpenses[$month] ?? 0;
+                $balance = $income - $expenses;
+            } else {
+                $balance = 0;
+            }
+
+            $monthlyBalance[] = $balance;
             $labels[] = Carbon::create()->month($month)->format('F');
         }
 
         return [
             'datasets' => [
                 [
-                    'label' => 'Monthly Cashflow (€)',
-                    'data' => $monthlyCashflow,
+                    'label' => 'Monthly Balance (€)',
+                    'data' => $monthlyBalance,
                     'backgroundColor' => array_map(function ($value) {
                         return $value >= 0 ? '#10b981' : '#ef4444'; // Green for positive, red for negative
-                    }, $monthlyCashflow),
+                    }, $monthlyBalance),
                     'borderColor' => array_map(function ($value) {
                         return $value >= 0 ? '#059669' : '#dc2626'; // Darker green/red for borders
-                    }, $monthlyCashflow),
+                    }, $monthlyBalance),
                 ],
             ],
             'labels' => $labels,
