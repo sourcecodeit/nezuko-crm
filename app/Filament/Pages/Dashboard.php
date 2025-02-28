@@ -22,17 +22,31 @@ class Dashboard extends BaseDashboard
     {
         $this->selectedYear = session('selected_year', Carbon::now()->year);
     }
-    
-    protected function getHeaderWidgets(): array
+
+    public function getColumns(): int|string|array
+    {
+        return 2;
+    }
+
+    protected function getTopWidgets(): array
     {
         return [
-            // Any specific header widgets you want to add
+            \App\Filament\Widgets\UnpaidInvoicesWidget::class,
         ];
     }
-    
+
+    public function getBodyWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\CashflowChart::class,
+            \App\Filament\Widgets\MonthlyInvoiceChart::class,
+            \App\Filament\Widgets\CustomerInvoiceChart::class,
+        ];
+    }
+
     public function getHeaderWidgetsColumns(): int|array
     {
-        return 1;
+        return 3;
     }
     
     public function updatedSelectedYear(): void

@@ -83,10 +83,15 @@ class ContractResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalDescription('Are you sure you want to delete this contract? This action cannot be undone.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalDescription('Are you sure you want to delete the selected contracts? This action cannot be undone.'),
                 ]),
             ]);
     }

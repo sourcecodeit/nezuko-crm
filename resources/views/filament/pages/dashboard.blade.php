@@ -9,9 +9,9 @@
             @endforeach
         </select>
     </div>
-
+    <x-filament-widgets::widgets :columns="1" :widgets="$this->getTopWidgets()" />
     <x-filament-widgets::widgets
         :columns="$this->getColumns()"
-        :widgets="$this->getVisibleWidgets()"
+        :widgets="$this->getBodyWidgets()"
     />
 </x-filament-panels::page>

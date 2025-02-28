@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class MonthlyInvoiceChart extends ChartWidget
 {
+    protected int|string|array $columnSpan = 1;
+
+
     public function getHeading(): string 
     {
         $year = session('selected_year', Carbon::now()->year);
