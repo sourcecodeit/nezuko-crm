@@ -70,9 +70,8 @@ We welcome contributions from developers worldwide! To get started:
 Read our [Contribution Guidelines](CONTRIBUTING.md) for more details.
 
 ## 📢 Community & Support
-- Join our **Discord**: [Invite Link](https://discord.com/your-invite)
-- Report issues: [GitHub Issues](https://github.com/yourusername/nezuko-crm/issues)
-- Follow us on Twitter: [@NezukoCRM](https://twitter.com/NezukoCRM)
+- Join our **Discord**: [Invite Link](https://discord.gg/BKXaSf4q)
+- Report issues: [GitHub Issues](https://github.com/sourcecodeit/nezuko-crm/issues)
 
 ## 📝 License
 Nezuko CRM is **MIT Licensed** – use it freely for personal and commercial projects.
