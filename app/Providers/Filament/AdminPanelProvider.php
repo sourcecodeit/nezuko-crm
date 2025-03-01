@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('')
             ->login()
+            ->brandLogo('/images/logo.png')
             ->colors([
                 'primary' => Color::Amber,
             ])
