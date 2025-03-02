@@ -22,6 +22,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Enums\FiltersLayout;
 use Illuminate\Support\HtmlString;
 use Filament\Tables\Actions\Action;
 
@@ -112,12 +113,36 @@ class InvoiceResource extends Resource
                                     ->whereYear('date', $year)
                             );
                     }),
+                SelectFilter::make('month')
+                    ->label('Month')
+                    ->options([
+                        '1' => 'January',
+                        '2' => 'February',
+                        '3' => 'March',
+                        '4' => 'April',
+                        '5' => 'May',
+                        '6' => 'June',
+                        '7' => 'July',
+                        '8' => 'August',
+                        '9' => 'September',
+                        '10' => 'October',
+                        '11' => 'November',
+                        '12' => 'December',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['value'],
+                                fn(Builder $query, $month): Builder => $query
+                                    ->whereMonth('date', $month)
+                            );
+                    }),
                 TernaryFilter::make('paid')
                     ->label('Payment Status')
                     ->placeholder('All Invoices')
                     ->trueLabel('Paid Invoices')
                     ->falseLabel('Unpaid Invoices')
-            ])
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
