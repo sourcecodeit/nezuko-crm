@@ -60,7 +60,7 @@ class ExpenseResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->money('USD')
+                    ->money('EUR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
@@ -119,8 +119,6 @@ class ExpenseResource extends Resource
     {
         return [
             'index' => Pages\ListExpenses::route('/'),
-            'create' => Pages\CreateExpense::route('/create'),
-            'edit' => Pages\EditExpense::route('/{record}/edit'),
         ];
     }
 }
