@@ -144,7 +144,20 @@ class InvoiceResource extends Resource
                     ->falseLabel('Unpaid Invoices')
             ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('View Invoice')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->modalHeading('Edit Invoice')
+                    ->slideOver(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Invoice')
+                    ->modalDescription('Are you sure you want to delete this invoice? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, delete invoice')
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -164,8 +177,6 @@ class InvoiceResource extends Resource
     {
         return [
             'index' => Pages\ListInvoices::route('/'),
-            'create' => Pages\CreateInvoice::route('/create'),
-            'edit' => Pages\EditInvoice::route('/{record}/edit'),
         ];
     }
 

@@ -163,7 +163,20 @@ class CustomerResource extends Resource
                     })
             ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('View Customer')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->modalHeading('Edit Customer')
+                    ->slideOver(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Customer')
+                    ->modalDescription('Are you sure you want to delete this customer? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, delete customer')
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -183,8 +196,6 @@ class CustomerResource extends Resource
     {
         return [
             'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
 }

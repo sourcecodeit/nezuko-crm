@@ -82,10 +82,18 @@ class ContractResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('View Contract')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()
-                    ->modalDescription('Are you sure you want to delete this contract? This action cannot be undone.'),
+                    ->modalHeading('Delete Contract')
+                    ->modalDescription('Are you sure you want to delete this contract? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, delete contract')
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

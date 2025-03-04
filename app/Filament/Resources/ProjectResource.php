@@ -57,7 +57,20 @@ class ProjectResource extends Resource
                 
             ], layout: FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('View Project')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->modalHeading('Edit Project')
+                    ->slideOver(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Project')
+                    ->modalDescription('Are you sure you want to delete this project? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, delete project')
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -77,8 +90,6 @@ class ProjectResource extends Resource
     {
         return [
             'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
 }

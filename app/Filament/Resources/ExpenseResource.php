@@ -73,6 +73,38 @@ class ExpenseResource extends Resource
                 Tables\Columns\TextColumn::make('end_date')
                     ->date()
                     ->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading('View Expense')
+                    ->modalDescription('Detailed expense information')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Edit Expense')
+                    ->slideOver()
+                    ->label(''),
+                Tables\Actions\Action::make('duplicate')
+                    ->tooltip('Duplicate')
+                    ->icon('heroicon-o-document-duplicate')
+                    ->label('')
+                    ->action(function (Expense $record): void {
+                        $newExpense = $record->replicate();
+                        
+                        // If expense is not recurring, set date to today
+                        if (!$newExpense->recurring) {
+                            $newExpense->date = now()->toDateString();
+                        }
+                        
+                        $newExpense->save();
+                    })
+                    ->successNotificationTitle('Expense duplicated successfully'),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Delete Expense')
+                    ->modalDescription('Are you sure you want to delete this expense? This action cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, delete expense')
+                    ->label(''),
             ]);
     }
 
