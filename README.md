@@ -1,6 +1,6 @@
 # Nezuko CRM
 
-![Nezuko CRM Banner](https://github.com/sourcecodeit/nezuko-crm/blob/main/assets/logo.png?raw=true)
+![Nezuko Dashboard](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/dashboard-min.png?raw=true?raw=true)
 
 **Nezuko CRM** is a **100% Open Source** Customer Relationship Management system built with **Laravel** and **FilamentPHP**. It provides a modern, flexible, and extensible platform for managing customer interactions, sales, and business workflows with ease.
 
@@ -50,6 +50,11 @@ php artisan serve
 ```
 
 Now, visit `http://localhost:8000` in your browser and log in with the user you have created.
+
+
+![Nezuko Contracts](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/contracts-min.png?raw=true)
+
+![Nezuko Expenses](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/expenses-min.png?raw=true)
 
 ## 📚 Features (WIP)
 - 🎯 **Customer & Contract Management**
