@@ -51,19 +51,28 @@ php artisan serve
 
 Now, visit `http://localhost:8000` in your browser and log in with the user you have created.
 
+## 🖼️ Screenshots
 
 ![Nezuko Contracts](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/contracts-min.png?raw=true)
 
 ![Nezuko Expenses](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/expenses-min.png?raw=true)
 
+![Nezuko Customers](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/customers-min.png?raw=true)
+
 ## 📚 Features (WIP)
-- 🎯 **Customer & Contract Management**
+- 🧾 **Customer & Contract Management**
+- 🏗️ **Projects Management**
+- 📑 **Contracts**
+- 💵 **Invoice & Payment Management**
+
+## 🗺️ Roadmap
+
 - 🏷️ **Lead & Deal Tracking**
 - 📅 **Task & Appointment Scheduling**
-- 📜 **Invoice & Payment Management**
 - 🔐 **Role-Based Access Control (RBAC)**
 - 📊 **Reports & Analytics Dashboard**
 - 🖥️ **RESTful API for Integrations**
+
 
 ## 🛠️ Contribution Guide
 We welcome contributions from developers worldwide! To get started:
