@@ -1,6 +1,8 @@
 # Nezuko CRM
 
-![Nezuko Logo](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/logo.png?raw=true?raw=true)
+<p align="center">
+  <img width="100" alt="Nezuko Logo" src="https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/logo.png?raw=true?raw=true">
+</p>
 
 ![Nezuko Dashboard](https://github.com/sourcecodeit/nezuko-crm/blob/main/github-assets/dashboard-min.png?raw=true?raw=true)
 
