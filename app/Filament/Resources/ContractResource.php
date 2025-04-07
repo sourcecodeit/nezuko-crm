@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
+use App\Filament\Resources\ContractResource\RelationManagers\ServicesRelationManager;
 use App\Models\Contract;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -48,6 +49,21 @@ class ContractResource extends Resource
                 Toggle::make('recurring')
                     ->label('Recurring')
                     ->default(false),
+                Toggle::make('consumable')
+                    ->label('Consumable')
+                    ->default(false)
+                    ->live(),
+                TextInput::make('amount')
+                    ->label('Amount')
+                    ->numeric()
+                    ->placeholder('Total available units')
+                    ->hidden(fn (Forms\Get $get): bool => ! $get('consumable')),
+                TextInput::make('consumed_amount')
+                    ->label('Consumed Amount')
+                    ->numeric()
+                    ->default(0)
+                    ->placeholder('Units already consumed')
+                    ->hidden(fn (Forms\Get $get): bool => ! $get('consumable')),
                 DatePicker::make('start_date')
                     ->label('Start Date')
                     ->required(),
@@ -62,6 +78,9 @@ class ContractResource extends Resource
                         'yearly' => 'Yearly',
                     ])
                     ->required(),
+                Forms\Components\CheckboxList::make('services')
+                    ->relationship('services', 'name')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -74,9 +93,26 @@ class ContractResource extends Resource
                 TextColumn::make('price')->label('Price')->sortable(),
                 TextColumn::make('active')->label('Active')->sortable(),
                 TextColumn::make('recurring')->label('Recurring')->sortable(),
+                Tables\Columns\IconColumn::make('consumable')
+                    ->boolean()
+                    ->label('Consumable')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('consumed_amount')
+                    ->label('Consumed')
+                    ->formatStateUsing(function ($state, $record) {
+                        if (!$record->consumable) {
+                            return '-';
+                        }
+                        
+                        return $record->consumed_amount . '/' . $record->amount;
+                    })
+                    ->sortable(),
                 TextColumn::make('billing_period')->label('Billing Period')->sortable(),
                 TextColumn::make('start_date')->label('Start Date')->sortable(),
                 TextColumn::make('end_date')->label('End Date')->sortable(),
+                Tables\Columns\TextColumn::make('services.name')
+                    ->badge()
+                    ->label('Services'),
             ])
             ->filters([
                 //
@@ -107,7 +143,7 @@ class ContractResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ServicesRelationManager::class,
         ];
     }
 
