@@ -38,6 +38,10 @@ class ContractResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Textarea::make('notes')
+                    ->label('Notes')
+                    ->columnSpanFull()
+                    ->rows(5)
+                    ->placeholder('Enter detailed notes about this contract')
                     ->maxLength(65535),
                 Toggle::make('active')
                     ->label('Active')
@@ -90,6 +94,13 @@ class ContractResource extends Resource
             ->columns([
                 TextColumn::make('customer.name')->label('Customer')->sortable()->searchable(),
                 TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('notes')
+                    ->label('Notes')
+                    ->limit(50)
+                    ->tooltip(function ($state) {
+                        return $state;
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('price')->label('Price')->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean()
