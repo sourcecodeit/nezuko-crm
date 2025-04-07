@@ -91,8 +91,14 @@ class ContractResource extends Resource
                 TextColumn::make('customer.name')->label('Customer')->sortable()->searchable(),
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('price')->label('Price')->sortable(),
-                TextColumn::make('active')->label('Active')->sortable(),
-                TextColumn::make('recurring')->label('Recurring')->sortable(),
+                Tables\Columns\IconColumn::make('active')
+                    ->boolean()
+                    ->label('Active')
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('recurring')
+                    ->boolean()
+                    ->label('Recurring')
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('consumable')
                     ->boolean()
                     ->label('Consumable')
