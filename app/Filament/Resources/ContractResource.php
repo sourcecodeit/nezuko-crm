@@ -43,9 +43,6 @@ class ContractResource extends Resource
                     ->rows(5)
                     ->placeholder('Enter detailed notes about this contract')
                     ->maxLength(65535),
-                Toggle::make('active')
-                    ->label('Active')
-                    ->default(true),
                 TextInput::make('price')
                     ->required()
                     ->numeric()
@@ -85,6 +82,9 @@ class ContractResource extends Resource
                 Forms\Components\CheckboxList::make('services')
                     ->relationship('services', 'name')
                     ->columnSpanFull(),
+                Toggle::make('active')
+                    ->label('Active')
+                    ->default(true),
             ]);
     }
 
