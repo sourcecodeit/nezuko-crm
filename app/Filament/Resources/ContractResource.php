@@ -94,13 +94,6 @@ class ContractResource extends Resource
             ->columns([
                 TextColumn::make('customer.name')->label('Customer')->sortable()->searchable(),
                 TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('notes')
-                    ->label('Notes')
-                    ->limit(50)
-                    ->tooltip(function ($state) {
-                        return $state;
-                    })
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('price')->label('Price')->sortable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean()
