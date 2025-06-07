@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ContractResource\Pages;
 
 use App\Filament\Resources\ContractResource;
 use App\Filament\Resources\ContractResource\Widgets\MRRStats;
+use App\Filament\Resources\ContractResource\Widgets\ContractsDueThisMonth;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -22,6 +23,7 @@ class ListContracts extends ListRecords
     {
         return [
             MRRStats::class,
+            ContractsDueThisMonth::class,
         ];
     }
 }
