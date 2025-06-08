@@ -4,7 +4,6 @@ namespace App\Filament\Resources\ContractResource\Widgets;
 
 use App\Models\Contract;
 use Carbon\Carbon;
-use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -12,6 +11,7 @@ use Filament\Widgets\TableWidget;
 class ContractsDueThisMonth extends TableWidget
 {
     protected static ?string $heading = 'Contracts Due This Month';
+
     protected int|string|array $columnSpan = 'full';
 
     protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation|null
@@ -63,6 +63,7 @@ class ContractsDueThisMonth extends TableWidget
     public function table(Table $table): Table
     {
         return $table
+            ->query($this->getTableQuery())
             ->columns([
                 TextColumn::make('name')->label('Contract')->searchable(),
                 TextColumn::make('customer.name')->label('Customer')->searchable(),
