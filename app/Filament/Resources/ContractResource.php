@@ -4,22 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
-use App\Filament\Resources\ContractResource\RelationManagers\ServicesRelationManager;
 use App\Models\Contract;
 use Filament\Forms;
+use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\BelongsToSelect;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Table;
 
 class ContractResource extends Resource
 {
@@ -110,11 +107,11 @@ class ContractResource extends Resource
                 Tables\Columns\TextColumn::make('consumed_amount')
                     ->label('Consumed')
                     ->formatStateUsing(function ($state, $record) {
-                        if (!$record->consumable) {
+                        if (! $record->consumable) {
                             return '-';
                         }
-                        
-                        return $record->consumed_amount . '/' . $record->amount;
+
+                        return $record->consumed_amount.'/'.$record->amount;
                     })
                     ->sortable(),
                 TextColumn::make('billing_period')->label('Billing Period')->sortable(),
@@ -163,6 +160,14 @@ class ContractResource extends Resource
             'index' => Pages\ListContracts::route('/'),
             'create' => Pages\CreateContract::route('/create'),
             'edit' => Pages\EditContract::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ContractResource\Widgets\MRRStats::class,
+            ContractResource\Widgets\ContractsDueThisMonth::class,
         ];
     }
 }
