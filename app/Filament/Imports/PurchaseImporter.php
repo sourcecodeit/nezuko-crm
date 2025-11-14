@@ -19,7 +19,7 @@ class PurchaseImporter extends Importer
                 ->label('Invoice Number')
                 ->requiredMapping()
                 ->rules(['required'])
-                ->guess(['Numero fattura / Documento', 'Invoice Number', 'Invoice', 'Numero fattura'])
+                ->guess(['Numero fattura / Documento', 'Numero fattura/Documento', 'Invoice Number', 'Invoice', 'Numero fattura'])
                 ->example('5019823')
                 ->castStateUsing(function (?string $state): ?string {
                     return self::cleanValue($state);
@@ -29,7 +29,7 @@ class PurchaseImporter extends Importer
                 ->label('Date')
                 ->requiredMapping()
                 ->rules(['required'])
-                ->guess(['Data emissione', 'Date', 'Data'])
+                ->guess(['Data emissione', 'Data emissione fattura', 'Date', 'Data'])
                 ->example('23/03/2025')
                 ->castStateUsing(function (?string $state): ?string {
                     $state = self::cleanValue($state);
@@ -49,23 +49,11 @@ class PurchaseImporter extends Importer
                     }
                 }),
 
-            ImportColumn::make('fiscal_code')
-                ->label('Fiscal Code')
-                ->guess(['Codice fiscale fornitore', 'Fiscal Code', 'Codice fiscale'])
-                ->example('07007590966')
-                ->castStateUsing(fn (?string $state) => self::cleanValue($state)),
-
-            ImportColumn::make('vat_code')
-                ->label('VAT Code')
-                ->guess(['Partita IVA fornitore', 'VAT Code', 'Partita IVA', 'VAT'])
-                ->example('07007590966')
-                ->castStateUsing(fn (?string $state) => self::cleanValue($state)),
-
             ImportColumn::make('supplier')
                 ->label('Supplier')
                 ->requiredMapping()
                 ->rules(['required'])
-                ->guess(['Denominazione fornitore', 'Supplier', 'Fornitore'])
+                ->guess(['Denominazione fornitore', 'Denominazione fornitore estero', 'Supplier', 'Fornitore'])
                 ->example('Radius Business Solutions (Italia) SRL')
                 ->castStateUsing(fn (?string $state) => self::cleanValue($state)),
 

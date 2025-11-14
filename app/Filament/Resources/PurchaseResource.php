@@ -43,17 +43,6 @@ class PurchaseResource extends Resource
                     ])
                     ->columns(3),
                 
-                Forms\Components\Section::make('Supplier Details')
-                    ->schema([
-                        Forms\Components\TextInput::make('fiscal_code')
-                            ->label('Fiscal Code')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('vat_code')
-                            ->label('VAT Code')
-                            ->maxLength(255),
-                    ])
-                    ->columns(2),
-                
                 Forms\Components\Section::make('Amounts')
                     ->schema([
                         Forms\Components\TextInput::make('amount')
@@ -103,14 +92,6 @@ class PurchaseResource extends Resource
                     ->label('Supplier')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('fiscal_code')
-                    ->label('Fiscal Code')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('vat_code')
-                    ->label('VAT Code')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
                     ->money('EUR')
@@ -187,6 +168,7 @@ class PurchaseResource extends Resource
             'create' => Pages\CreatePurchase::route('/create'),
             'view' => Pages\ViewPurchase::route('/{record}'),
             'edit' => Pages\EditPurchase::route('/{record}/edit'),
+            'details' => Pages\DetailedPurchases::route('/details'),
         ];
     }
 }

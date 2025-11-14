@@ -9,26 +9,35 @@ use Carbon\Carbon;
 
 class PurchaseStatsWidget extends BaseWidget
 {
+    protected $listeners = ['yearChanged' => '$refresh'];
+
     protected function getStats(): array
     {
-        $startOfYear = Carbon::now()->startOfYear();
+        $selectedYear = session('purchase_selected_year', Carbon::now()->year);
+        $startOfYear = Carbon::create($selectedYear, 1, 1)->startOfYear();
+        $endOfYear = Carbon::create($selectedYear, 12, 31)->endOfYear();
         $now = Carbon::now();
         
-        // Total purchases this year
-        $totalThisYear = Purchase::where('date', '>=', $startOfYear)
+        // Total purchases for selected year
+        $totalThisYear = Purchase::whereYear('date', $selectedYear)
             ->sum('amount');
         
         // Total all purchases
         $totalAllTime = Purchase::sum('amount');
         
-        // Average monthly spending (based on current year data)
-        $monthsElapsed = $startOfYear->diffInMonths($now) + 1;
+        // Average monthly spending (based on selected year data)
+        // If selected year is current year, use elapsed months, otherwise use all 12 months
+        if ($selectedYear == $now->year) {
+            $monthsElapsed = $startOfYear->diffInMonths($now) + 1;
+        } else {
+            $monthsElapsed = 12;
+        }
         $averageMonthly = $monthsElapsed > 0 ? $totalThisYear / $monthsElapsed : 0;
         
-        // Get monthly data for the chart (last 6 months)
+        // Get monthly data for the chart (last 6 months of selected year)
         $monthlyData = [];
         for ($i = 5; $i >= 0; $i--) {
-            $month = Carbon::now()->subMonths($i);
+            $month = Carbon::create($selectedYear, 12, 1)->subMonths($i);
             $monthlyData[] = Purchase::whereYear('date', $month->year)
                 ->whereMonth('date', $month->month)
                 ->sum('amount');

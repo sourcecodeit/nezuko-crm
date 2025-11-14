@@ -9,11 +9,10 @@ class Purchase extends Model
     protected $fillable = [
         'invoice_number',
         'date',
-        'fiscal_code',
-        'vat_code',
         'supplier',
         'amount',
         'tax',
+        'total',
     ];
 
     protected $casts = [

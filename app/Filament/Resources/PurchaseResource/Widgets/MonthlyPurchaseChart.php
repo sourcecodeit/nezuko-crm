@@ -8,22 +8,33 @@ use Carbon\Carbon;
 
 class MonthlyPurchaseChart extends ChartWidget
 {
-    protected static ?string $heading = 'Monthly Purchase Spending';
-
     protected static ?int $sort = 2;
+
+    protected int | string | array $columnSpan = 'full';
+
+    protected static ?string $pollingInterval = null;
+
+    protected $listeners = ['yearChanged' => '$refresh'];
+
+    public function getHeading(): string 
+    {
+        $year = session('purchase_selected_year', Carbon::now()->year);
+        return "Monthly Purchase Spending ($year)";
+    }
     
     protected function getData(): array
     {
+        $year = session('purchase_selected_year', Carbon::now()->year);
+        
         $months = [];
         $amounts = [];
 
-        // Get data for the last 12 months
-        for ($i = 11; $i >= 0; $i--) {
-            $month = Carbon::now()->subMonths($i);
-            $months[] = $month->format('M Y');
+        // Get data for all 12 months of selected year
+        for ($i = 1; $i <= 12; $i++) {
+            $months[] = Carbon::create($year, $i, 1)->format('M');
             
-            $monthlyTotal = Purchase::whereYear('date', $month->year)
-                ->whereMonth('date', $month->month)
+            $monthlyTotal = Purchase::whereYear('date', $year)
+                ->whereMonth('date', $i)
                 ->sum('amount');
             
             $amounts[] = round($monthlyTotal, 2);
@@ -52,6 +63,7 @@ class MonthlyPurchaseChart extends ChartWidget
     protected function getOptions(): array
     {
         return [
+            'maintainAspectRatio' => false,
             'plugins' => [
                 'legend' => [
                     'display' => true,
@@ -60,11 +72,29 @@ class MonthlyPurchaseChart extends ChartWidget
             'scales' => [
                 'y' => [
                     'beginAtZero' => true,
+                    'display' => true,
+                    'grid' => [
+                        'display' => true,
+                        'drawBorder' => true,
+                    ],
                     'ticks' => [
-                        'callback' => "function(value) { return '€' + value.toFixed(2); }",
+                        'display' => true,
+                        'stepSize' => null,
+                        'callback' => "function(value) { return '€' + value.toLocaleString('it-IT', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }",
+                    ],
+                ],
+                'x' => [
+                    'display' => true,
+                    'grid' => [
+                        'display' => true,
                     ],
                 ],
             ],
         ];
+    }
+
+    protected function getHeight(): ?int
+    {
+        return 400;
     }
 }
