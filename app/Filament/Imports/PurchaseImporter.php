@@ -81,9 +81,16 @@ class PurchaseImporter extends Importer
 
     public function resolveRecord(): ?Purchase
     {
-        // per ora: sempre crea un nuovo record
-        // (comportamento di default suggerito nella doc)
-        return new Purchase();
+        // Get "Other" category as default
+        $otherCategory = \App\Models\PurchaseCategory::where('name', 'Other')->first();
+        
+        $purchase = new Purchase();
+        
+        if ($otherCategory) {
+            $purchase->purchase_category_id = $otherCategory->id;
+        }
+        
+        return $purchase;
     }
 
     public static function getCompletedNotificationBody(Import $import): string

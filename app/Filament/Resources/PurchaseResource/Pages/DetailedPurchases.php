@@ -47,6 +47,10 @@ class DetailedPurchases extends Page implements HasTable
                     ->label('Supplier')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
                     ->money('EUR')

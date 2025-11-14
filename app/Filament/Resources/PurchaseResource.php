@@ -40,8 +40,14 @@ class PurchaseResource extends Resource
                             ->label('Supplier')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\Select::make('purchase_category_id')
+                            ->label('Category')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
                     ])
-                    ->columns(3),
+                    ->columns(4),
                 
                 Forms\Components\Section::make('Amounts')
                     ->schema([

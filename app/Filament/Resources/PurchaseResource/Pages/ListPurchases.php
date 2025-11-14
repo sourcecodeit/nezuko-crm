@@ -66,12 +66,12 @@ class ListPurchases extends ListRecords
                 ->modalSubmitActionLabel('Apply')
                 ->color('gray')
                 ->icon('heroicon-o-calendar'),
-            Actions\Action::make('viewDetails')
+            /*Actions\Action::make('viewDetails')
                 ->label('View Detailed Purchases')
                 ->icon('heroicon-o-list-bullet')
                 ->color('info')
                 ->url(fn (): string => PurchaseResource::getUrl('details'))
-                ->openUrlInNewTab(false),
+                ->openUrlInNewTab(false),*/
         ];
     }
 
