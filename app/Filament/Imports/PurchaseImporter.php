@@ -81,17 +81,9 @@ class PurchaseImporter extends Importer
 
     public function resolveRecord(): ?Purchase
     {
-        // Get "Other" category as default
-        $otherCategory = \App\Models\PurchaseCategory::where('name', 'Other')->first();
-        
-
         $purchase = Purchase::firstOrNew([
             'invoice_number' => $this->data['invoice_number']
         ]);
-        
-        if ($otherCategory && ! $purchase->purchase_category_id) {
-            $purchase->purchase_category_id = $otherCategory->id;
-        }
         
         return $purchase;
     }

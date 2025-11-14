@@ -5,9 +5,11 @@ namespace App\Filament\Resources\PurchaseResource\Pages;
 use App\Filament\Resources\PurchaseResource;
 use App\Filament\Imports\PurchaseImporter;
 use App\Models\Purchase;
+use App\Services\AiCategorizationService;
 use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Table;
 
@@ -49,6 +51,46 @@ class ListPurchases extends ListRecords
                 ->label('Import CSV')
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('success'),
+            Actions\Action::make('categorizeWithAi')
+                ->label('Categorize with AI')
+                ->icon('heroicon-o-sparkles')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalHeading('Categorize Purchases with AI')
+                ->modalDescription('This will use AI to automatically categorize all purchases without a category based on their supplier names. This action cannot be undone.')
+                ->modalSubmitActionLabel('Categorize')
+                ->action(function () {
+                    try {
+                        $service = new AiCategorizationService();
+                        $result = $service->categorizeUncategorizedPurchases();
+                        
+                        if ($result['success'] > 0) {
+                            Notification::make()
+                                ->success()
+                                ->title('Categorization Complete')
+                                ->body("{$result['success']} purchase(s) were successfully categorized." . 
+                                    ($result['failed'] > 0 ? " {$result['failed']} failed." : ''))
+                                ->send();
+                            
+                            // Refresh the page to show updated data
+                            $this->dispatch('$refresh');
+                        } else {
+                            $errorMessage = !empty($result['errors']) ? implode(' ', $result['errors']) : 'No purchases were categorized.';
+                            
+                            Notification::make()
+                                ->warning()
+                                ->title('No Changes Made')
+                                ->body($errorMessage)
+                                ->send();
+                        }
+                    } catch (\Exception $e) {
+                        Notification::make()
+                            ->danger()
+                            ->title('Error')
+                            ->body('Failed to categorize purchases: ' . $e->getMessage())
+                            ->send();
+                    }
+                }),
             Actions\Action::make('selectYear')
                 ->label('Select Year')
                 ->form([
@@ -80,6 +122,8 @@ class ListPurchases extends ListRecords
         return [
             PurchaseResource\Widgets\PurchaseStatsWidget::class,
             PurchaseResource\Widgets\MonthlyPurchaseChart::class,
+            PurchaseResource\Widgets\CategoryPieChart::class,
+            PurchaseResource\Widgets\CategoryAggregateWidget::class,
             PurchaseResource\Widgets\SupplierAggregateWidget::class,
         ];
     }

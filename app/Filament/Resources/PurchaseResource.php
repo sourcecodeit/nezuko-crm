@@ -86,10 +86,6 @@ class PurchaseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('invoice_number')
-                    ->label('Invoice #')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->label('Date')
                     ->date()
@@ -98,14 +94,12 @@ class PurchaseResource extends Resource
                     ->label('Supplier')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('amount')
-                    ->label('Amount')
-                    ->money('EUR')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tax')
-                    ->label('Tax')
-                    ->money('EUR')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
                 Tables\Columns\TextColumn::make('total')
                     ->label('Total')
                     ->money('EUR')
@@ -114,10 +108,6 @@ class PurchaseResource extends Resource
                         Tables\Columns\Summarizers\Sum::make()
                             ->money('EUR'),
                     ]),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('date', 'desc')
             ->groups([
