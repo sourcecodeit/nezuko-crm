@@ -84,9 +84,12 @@ class PurchaseImporter extends Importer
         // Get "Other" category as default
         $otherCategory = \App\Models\PurchaseCategory::where('name', 'Other')->first();
         
-        $purchase = new Purchase();
+
+        $purchase = Purchase::firstOrNew([
+            'invoice_number' => $this->data['invoice_number']
+        ]);
         
-        if ($otherCategory) {
+        if ($otherCategory && ! $purchase->purchase_category_id) {
             $purchase->purchase_category_id = $otherCategory->id;
         }
         
