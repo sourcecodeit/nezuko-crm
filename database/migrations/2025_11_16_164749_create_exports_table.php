@@ -16,9 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('exporter');
             $table->integer('total_rows')->default(0);
+            $table->integer('processed_rows')->default(0);
+            $table->integer('successful_rows')->default(0);
             $table->string('file_disk');
             $table->string('file_name')->nullable();
-            $table->integer('successful_rows')->default(0);
             $table->timestamps();
             $table->timestamp('completed_at')->nullable();
         });
