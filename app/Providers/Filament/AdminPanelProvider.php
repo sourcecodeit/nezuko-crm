@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('')
             ->login()
             ->brandLogo('/images/logo.png')
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Amber,
             ])
