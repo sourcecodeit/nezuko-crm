@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ContractExporter;
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Models\Contract;
@@ -137,6 +138,10 @@ class ContractResource extends Resource
                     ->modalDescription('Are you sure you want to delete this contract? This action cannot be undone.')
                     ->modalSubmitActionLabel('Yes, delete contract')
                     ->label(''),
+            ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(ContractExporter::class),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

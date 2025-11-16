@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ExpenseExporter;
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Expense;
@@ -105,6 +106,10 @@ class ExpenseResource extends Resource
                     ->modalDescription('Are you sure you want to delete this expense? This action cannot be undone.')
                     ->modalSubmitActionLabel('Yes, delete expense')
                     ->label(''),
+            ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(ExpenseExporter::class),
             ]);
     }
 

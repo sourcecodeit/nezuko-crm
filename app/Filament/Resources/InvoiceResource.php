@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\InvoiceExporter;
 use App\Filament\Resources\InvoiceResource\Pages;
 use App\Filament\Resources\InvoiceResource\RelationManagers;
 use App\Filament\Resources\InvoiceResource\Widgets\InvoiceStats;
@@ -158,6 +159,10 @@ class InvoiceResource extends Resource
                     ->modalDescription('Are you sure you want to delete this invoice? This action cannot be undone.')
                     ->modalSubmitActionLabel('Yes, delete invoice')
                     ->label(''),
+            ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(InvoiceExporter::class),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
